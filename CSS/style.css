@@ -8,6 +8,7 @@ body {
 
 div {
 	padding-top: 5%;
+    text-align: center;
 }
 
 canvas {
@@ -21,7 +22,6 @@ canvas {
 }
 
 h1 {
-	text-align: center;
-	font-family: 'Neucha', cursive;
+	size: 500%;
 }
 
