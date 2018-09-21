@@ -9,8 +9,9 @@
 	</head>
 
 	<body onload="startGame()">
+		<canvas></canvas>
 		<div>
-			<button onmousedown="accelerate(-0.5)" onmouseup="accelerate(0.05)"><h1>Fly</h1></button>
+			<button onmousedown="accelerate(-0.5, myBird)" onmouseup="accelerate(0.05, myBird)"><h2>Fly</h2></button>
 		</div>
 		<script src="Js/game.js"></script>
 	</body>
