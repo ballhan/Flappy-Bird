@@ -1,14 +1,10 @@
 html {
 	background-color: #F0F8FF;
+    overflow: hidden;
 }
 
 body {
-	padding-top: 5%;
-}
-
-div {
-	padding-top: 5%;
-    text-align: center;
+	padding-top: 2%;
 }
 
 canvas {
@@ -21,7 +17,8 @@ canvas {
     display: block;
 }
 
-h1 {
-	size: 500%;
+div {
+    padding-top: 10px;
+	text-align: center;
 }
 
