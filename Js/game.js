@@ -5,7 +5,7 @@ var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
 const canvasHeight = canvas.height = 0.8 * window.innerHeight;
 const canvasWidth = canvas.width = 0.5 * canvasHeight;
-const birdWidth = 0.02 * window.innerHeight;
+const birdWidth = 0.05 * window.innerHeight;
 const birdHeight = birdWidth;
 const birdColor = "#FF0000";
 
@@ -20,7 +20,7 @@ var myGameArea = {
         updateGameArea();
     },
     clear : function() {
-        c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        c.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
 
@@ -36,7 +36,7 @@ function bird() {
     this.gravitySpeed = 0;
     this.draw = function() {
         c.fillStyle = this.bodyColor;
-        c.fillRect(this.x, this.y, this.width, this.height);
+        c.fillRect(this.x, this.y, this.bodyWidth, this.bodyHeight);
     }
     this.move = function() {
         var buttomMargin = canvasHeight - birdHeight;
@@ -68,7 +68,9 @@ function bird() {
 }
 
 function updateGameArea() {
+    myGameArea.clear();  
     myBird.update();
+    requestAnimationFrame(updateGameArea);
 }
 
 function accelerate(n, bird) {
