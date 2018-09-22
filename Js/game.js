@@ -1,16 +1,22 @@
 var myBird;
-var myObstacles = [];
-var myScore;
+var pillarArray = [];
+var myScore = 0;
+var pillarCount = 0;
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
 const canvasHeight = canvas.height = 0.8 * window.innerHeight;
 const canvasWidth = canvas.width = 0.5 * canvasHeight;
-const birdWidth = 0.05 * window.innerHeight;
+const birdWidth = 0.06 * canvasHeight;
 const birdHeight = birdWidth;
 const birdColor = "#FF0000";
+const pillarWidth = birdWidth;
+const pillarGapX = 1/3 * canvasWidth;
+const pillarGapY = 3 * birdWidth;
+const pillarColor = "#0B6623";
 
 function startGame() {
     myBird = new bird();
+    pillarArray.push(new pillar(myBird));
     myBird.gravity = 0.05;
     myGameArea.start();
 }
@@ -51,29 +57,86 @@ function bird() {
             this.gravitySpeed = 0.05;
         }
     }
-    this.crashWith = function(pillarArray) {
-        var x1 = this.x;
-        var x2 = this.x + this.bodyWidth;
-        var y1 = this.y;
-        var y2 = this.y + this.bodyHeight;
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            return;
-        }
-    }
     this.update = function() {
         this.draw();
         this.move();
     }
 }
 
+function pillar(bird) {
+    this.speedX = 1 / 500 * canvasWidth;
+    this.bodyColor = pillarColor;  
+    this.x = canvasWidth;
+    this.y = 0;
+    this.y2Buttom = canvasHeight;
+    this.bodyWidth = pillarWidth;
+    this.bodyHeightTop = Math.random() * canvasWidth * 3 / 4;
+    this.bodyHeightButtom = this.bodyHeightTop + pillarGapY;
+    this.draw = function() {
+        c.fillStyle = this.bodyColor;
+        //top pillar
+        c.fillRect(this.x, this.y, this.bodyWidth, this.bodyHeightTop);
+        //buttom
+        c.fillRect(this.x, this.bodyHeightButtom, this.bodyWidth, this.y2Buttom);
+    }
+    this.move = function() {
+        this.x -= speedX;
+    }
+    this.score = function() {
+        if (this.x + this.bodyWidth > bird.x) {
+            score ++;
+        }
+    }
+    this.crash = function() {
+        var x1 = bird.x;
+        var x2 = bird.x + bird.bodyWidth;
+        var y1 = bird.y;
+        var y2 = bird.y + bird.bodyHeight;
+        var topPillarX1 = buttomPillarX1 = this.x;
+        var topPillarX2 = buttomPillarX2 = this.x + this.bodyWidth;
+        var topPillarY1 = this.y;
+        var topPillarY2 = this.bodyHeightTop;
+        var buttomPillarY1 = this.bodyHeightButtom;
+        var buttomPillarY2 = this.y2Buttom;
+        if ((topPillarX1 < X2 && topPillarX2 > X1 && topPillarY1 < Y2 && topPillarY2 > Y1) || (buttomPillarX1 < X2 && buttomPillarX2 > X1 && buttomPillarY1 < Y2 && buttomPillarY2 > Y1)) {
+            document.location.reload();
+        }
+    }
+    this.update = function() {
+        this.draw();
+        this.move();
+        this.score();
+        this.crash();
+    }
+}
+
+function drawScore() {
+    c.font = "16px Arial";
+    c.fillStyle = "#000000";
+    c.fillText("Score: " + myScore, 8, 20);
+}
+
+function pillarUpdate(pillarArray) {
+    for (var i = 0; i < pillarArray.length; i++) {
+        pillarArray[i].update;
+        if (pillarArray[i].x <= 0 - pillarWidth) {
+            pillarArray.splice(i, 1);
+            pillarCount --;
+            pillarArray.push(new pillar(myBird));
+        }
+            //pushing new pillars
+        if (pillarArray[pillarCount].x < canvasWidth - pillarGapX) {
+            pillarCount ++;
+            pillarArray.push(new pillar(myBird));
+        }
+    }
+}
+
 function updateGameArea() {
     myGameArea.clear();  
+    drawScore();
     myBird.update();
+    pillarUpdate(pillarArray);
     requestAnimationFrame(updateGameArea);
 }
 
