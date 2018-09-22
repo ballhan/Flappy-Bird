@@ -27,8 +27,7 @@ var myGameArea = {
 function bird() {
     this.bodyWidth = birdWidth;
     this.bodyHeight = birdHeight;
-    this.bodyColor = birdColor;
-    this.speedY = 0;    
+    this.bodyColor = birdColor;  
     //spawn X,Y
     this.x = 0.2 * canvasWidth;
     this.y = 0.3 * canvasHeight;
@@ -40,11 +39,16 @@ function bird() {
     }
     this.move = function() {
         var buttomMargin = canvasHeight - birdHeight;
+        var topMargin = 0; 
         this.gravitySpeed += this.gravity;
-        this.y += this.speedY + this.gravitySpeed;
+        this.y += this.gravitySpeed;
         if (this.y >= buttomMargin) {
             this.y = buttomMargin;
             this.gravitySpeed = 0;
+        }
+        if (this.y <= topMargin) {
+            this.y = topMargin;
+            this.gravitySpeed = 0.05;
         }
     }
     this.crashWith = function(pillarArray) {
