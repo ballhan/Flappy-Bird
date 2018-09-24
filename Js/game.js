@@ -10,14 +10,14 @@ const birdWidth = 0.06 * canvasHeight;
 const birdHeight = birdWidth;
 const birdColor = "#FF0000";
 const pillarWidth = birdWidth;
-const pillarGapX = 1/3 * canvasWidth;
-const pillarGapY = 3 * birdWidth;
+const pillarGapX = 1/2 * canvasWidth;
+const pillarGapY = 4 * birdWidth;
 const pillarColor = "#0B6623";
 
 function startGame() {
     myBird = new bird();
-    pillarArray.push(new pillar(myBird));
     myBird.gravity = 0.05;
+    pillarArray.push(new pillar(myBird));
     myGameArea.start();
 }
 
@@ -72,6 +72,7 @@ function pillar(bird) {
     this.bodyWidth = pillarWidth;
     this.bodyHeightTop = Math.random() * canvasWidth * 3 / 4;
     this.bodyHeightButtom = this.bodyHeightTop + pillarGapY;
+    this.scoreCheck = false;
     this.draw = function() {
         c.fillStyle = this.bodyColor;
         //top pillar
@@ -80,11 +81,13 @@ function pillar(bird) {
         c.fillRect(this.x, this.bodyHeightButtom, this.bodyWidth, this.y2Buttom);
     }
     this.move = function() {
-        this.x -= speedX;
+        this.x -= this.speedX;
     }
+    //add point for each pillar passed
     this.score = function() {
-        if (this.x + this.bodyWidth > bird.x) {
-            score ++;
+        if (this.x + this.bodyWidth < bird.x && this.scoreCheck == false) {
+            this.scoreCheck == true;
+            myScore ++;
         }
     }
     this.crash = function() {
@@ -98,7 +101,7 @@ function pillar(bird) {
         var topPillarY2 = this.bodyHeightTop;
         var buttomPillarY1 = this.bodyHeightButtom;
         var buttomPillarY2 = this.y2Buttom;
-        if ((topPillarX1 < X2 && topPillarX2 > X1 && topPillarY1 < Y2 && topPillarY2 > Y1) || (buttomPillarX1 < X2 && buttomPillarX2 > X1 && buttomPillarY1 < Y2 && buttomPillarY2 > Y1)) {
+        if ((topPillarX1 < x2 && topPillarX2 > x1 && topPillarY1 < y2 && topPillarY2 > y1) || (buttomPillarX1 < x2 && buttomPillarX2 > x1 && buttomPillarY1 < y2 && buttomPillarY2 > y1)) {
             document.location.reload();
         }
     }
@@ -118,7 +121,7 @@ function drawScore() {
 
 function pillarUpdate(pillarArray) {
     for (var i = 0; i < pillarArray.length; i++) {
-        pillarArray[i].update;
+        pillarArray[i].update();
         if (pillarArray[i].x <= 0 - pillarWidth) {
             pillarArray.splice(i, 1);
             pillarCount --;
