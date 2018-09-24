@@ -11,7 +11,7 @@ const birdHeight = birdWidth;
 const birdColor = "#FF0000";
 const pillarWidth = birdWidth;
 const pillarGapX = 1/2 * canvasWidth;
-const pillarGapY = 4 * birdWidth;
+const pillarGapY = 5 * birdWidth;
 const pillarColor = "#0B6623";
 
 function startGame() {
@@ -35,7 +35,7 @@ function bird() {
     this.bodyHeight = birdHeight;
     this.bodyColor = birdColor;  
     //spawn X,Y
-    this.x = 0.2 * canvasWidth;
+    this.x = 0.1 * canvasWidth;
     this.y = 0.3 * canvasHeight;
     this.gravity = 0;
     this.gravitySpeed = 0;
@@ -83,13 +83,6 @@ function pillar(bird) {
     this.move = function() {
         this.x -= this.speedX;
     }
-    //add point for each pillar passed
-    this.score = function() {
-        if (this.x + this.bodyWidth < bird.x && this.scoreCheck == false) {
-            this.scoreCheck == true;
-            myScore ++;
-        }
-    }
     this.crash = function() {
         var x1 = bird.x;
         var x2 = bird.x + bird.bodyWidth;
@@ -108,7 +101,6 @@ function pillar(bird) {
     this.update = function() {
         this.draw();
         this.move();
-        this.score();
         this.crash();
     }
 }
@@ -124,10 +116,10 @@ function pillarUpdate(pillarArray) {
         pillarArray[i].update();
         if (pillarArray[i].x <= 0 - pillarWidth) {
             pillarArray.splice(i, 1);
+            myScore ++;
             pillarCount --;
-            pillarArray.push(new pillar(myBird));
         }
-            //pushing new pillars
+        //pushing new pillars
         if (pillarArray[pillarCount].x < canvasWidth - pillarGapX) {
             pillarCount ++;
             pillarArray.push(new pillar(myBird));
