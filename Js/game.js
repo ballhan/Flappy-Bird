@@ -10,7 +10,7 @@ const birdWidth = 0.06 * canvasHeight;
 const birdHeight = birdWidth;
 const birdColor = "#FF0000";
 const pillarWidth = 1.3 * birdWidth;
-const pillarGapX = 1/2 * canvasWidth;
+const pillarGapX = 2/3 * canvasWidth;
 const pillarGapY = 5 * birdWidth;
 const pillarColor = "#0B6623";
 
